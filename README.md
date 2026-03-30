@@ -27,11 +27,6 @@ Generic tools like LeetCode and Pramp don't know NU's co-op cycle, your specific
 
 ---
 
-## 🚀 Live Demo
-**https://numockbuddy.netlify.app/**
-
----
-
 ## 🏆 Hackathon
 **Winner — Emerald Forge Hackathon 2026**
 
