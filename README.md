@@ -7,7 +7,6 @@
 ![AssemblyAI](https://img.shields.io/badge/AssemblyAI-FF0000?style=for-the-badge)
 ![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-![Hackathon Winner](https://img.shields.io/badge/🏆_Emerald_Forge_Hackathon_2026-Winner-gold?style=for-the-badge)
 
 > **Ace your interviews with AI on your side.**
 > AI-powered mock interview prep built exclusively for Northeastern University students & alumni.
@@ -35,7 +34,6 @@ Generic tools like LeetCode and Pramp don't know NU's co-op cycle, your specific
 
 ## 🏆 Hackathon
 **Winner — Emerald Forge Hackathon 2026**
-Built by a team of 5 Northeastern University students in 48 hours.
 
 ---
 
