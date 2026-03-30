@@ -7,18 +7,10 @@
 ![AssemblyAI](https://img.shields.io/badge/AssemblyAI-FF0000?style=for-the-badge)
 ![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-numockbuddy.netlify.app-brightgreen?style=for-the-badge)](https://numockbuddy.netlify.app/)
+![Hackathon Winner](https://img.shields.io/badge/🏆_Emerald_Forge_Hackathon_2026-Winner-gold?style=for-the-badge)
 
 > **Ace your interviews with AI on your side.**
 > AI-powered mock interview prep built exclusively for Northeastern University students & alumni.
-
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-numockbuddy.netlify.app-CC0000?style=flat-square)](https://numockbuddy.netlify.app/)
-![Built for Northeastern](https://img.shields.io/badge/Built%20for-Northeastern%20University-CC0000?style=flat-square)
-![Hackathon](https://img.shields.io/badge/Emerald%20Forge-Hackathon%202026-CC0000?style=flat-square)
-![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript)
-![Claude API](https://img.shields.io/badge/Claude-claude--sonnet--4--20250514-CC0000?style=flat-square)
 
 ---
 
@@ -38,6 +30,12 @@ Generic tools like LeetCode and Pramp don't know NU's co-op cycle, your specific
 
 ## 🚀 Live Demo
 **https://numockbuddy.netlify.app/**
+
+---
+
+## 🏆 Hackathon
+**Winner — Emerald Forge Hackathon 2026**
+Built by a team of 5 Northeastern University students in 48 hours.
 
 ---
 
