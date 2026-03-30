@@ -1,0 +1,120 @@
+<svg width="100%" viewBox="0 0 800 640" xmlns="http://www.w3.org/2000/svg" font-family="'Georgia', 'Times New Roman', serif">
+
+  <!-- White background -->
+  <rect width="800" height="640" fill="#ffffff"/>
+
+  <!-- Top red stripe -->
+  <rect x="0" y="0" width="800" height="6" fill="#CC0000"/>
+
+  <!-- Header -->
+  <circle cx="52" cy="38" r="20" fill="#CC0000"/>
+  <text x="52" y="44" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff" font-family="Georgia, serif">N</text>
+  <text x="82" y="34" font-size="17" font-weight="700" fill="#111111" font-family="Georgia, serif">NUMockBuddy</text>
+  <text x="82" y="50" font-size="10" fill="#888888" font-family="Arial, sans-serif" letter-spacing="1">SYSTEM ARCHITECTURE</text>
+  <line x1="40" y1="64" x2="760" y2="64" stroke="#CC0000" stroke-width="1.5"/>
+
+  <!-- ── TIER 1: Frontend ── -->
+  <rect x="30" y="74" width="740" height="120" rx="8" fill="#fff5f5" stroke="#f5c6c6" stroke-width="1"/>
+  <rect x="30" y="74" width="4" height="120" rx="2" fill="#CC0000"/>
+  <text x="46" y="93" font-size="9" font-weight="700" fill="#CC0000" font-family="Arial, sans-serif" letter-spacing="2">FRONTEND · NEXT.JS</text>
+
+  <!-- Frontend cards -->
+  <rect x="46" y="102" width="130" height="72" rx="6" fill="#ffffff" stroke="#f0c0c0" stroke-width="1"/>
+  <rect x="46" y="102" width="130" height="3" rx="1" fill="#CC0000"/>
+  <text x="111" y="128" text-anchor="middle" font-size="13" font-weight="700" fill="#111111">Practice with AI</text>
+  <text x="111" y="148" text-anchor="middle" font-size="10" fill="#888888" font-family="Arial, sans-serif">Interview flow</text>
+
+  <rect x="192" y="102" width="130" height="72" rx="6" fill="#ffffff" stroke="#f0c0c0" stroke-width="1"/>
+  <rect x="192" y="102" width="130" height="3" rx="1" fill="#CC0000"/>
+  <text x="257" y="128" text-anchor="middle" font-size="13" font-weight="700" fill="#111111">Resume AI</text>
+  <text x="257" y="148" text-anchor="middle" font-size="10" fill="#888888" font-family="Arial, sans-serif">ATS &amp; JD match</text>
+
+  <rect x="338" y="102" width="130" height="72" rx="6" fill="#ffffff" stroke="#f0c0c0" stroke-width="1"/>
+  <rect x="338" y="102" width="130" height="3" rx="1" fill="#CC0000"/>
+  <text x="403" y="128" text-anchor="middle" font-size="13" font-weight="700" fill="#111111">Volunteers</text>
+  <text x="403" y="148" text-anchor="middle" font-size="10" fill="#888888" font-family="Arial, sans-serif">Book sessions</text>
+
+  <rect x="484" y="102" width="130" height="72" rx="6" fill="#ffffff" stroke="#f0c0c0" stroke-width="1"/>
+  <rect x="484" y="102" width="130" height="3" rx="1" fill="#CC0000"/>
+  <text x="549" y="128" text-anchor="middle" font-size="13" font-weight="700" fill="#111111">Dashboard</text>
+  <text x="549" y="148" text-anchor="middle" font-size="10" fill="#888888" font-family="Arial, sans-serif">Skill tracking</text>
+
+  <rect x="630" y="102" width="130" height="72" rx="6" fill="#ffffff" stroke="#f0c0c0" stroke-width="1"/>
+  <rect x="630" y="102" width="130" height="3" rx="1" fill="#CC0000"/>
+  <text x="695" y="128" text-anchor="middle" font-size="13" font-weight="700" fill="#111111">Help &amp; Support</text>
+  <text x="695" y="148" text-anchor="middle" font-size="10" fill="#888888" font-family="Arial, sans-serif">Chat · a11y · FAQ</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="400" y1="194" x2="400" y2="218" stroke="#CC0000" stroke-width="1.5"/>
+  <polygon points="394,214 400,226 406,214" fill="#CC0000"/>
+
+  <!-- ── TIER 2: Backend ── -->
+  <rect x="30" y="228" width="740" height="120" rx="8" fill="#f5f5f5" stroke="#dddddd" stroke-width="1"/>
+  <rect x="30" y="228" width="4" height="120" rx="2" fill="#555555"/>
+  <text x="46" y="247" font-size="9" font-weight="700" fill="#555555" font-family="Arial, sans-serif" letter-spacing="2">BACKEND · API ROUTES &amp; DATA</text>
+
+  <rect x="46" y="256" width="224" height="72" rx="6" fill="#ffffff" stroke="#dddddd" stroke-width="1"/>
+  <rect x="46" y="256" width="224" height="3" rx="1" fill="#555555"/>
+  <text x="158" y="282" text-anchor="middle" font-size="13" font-weight="700" fill="#111111">Next.js API routes</text>
+  <text x="158" y="302" text-anchor="middle" font-size="10" fill="#888888" font-family="Arial, sans-serif">Server-side request handling</text>
+
+  <rect x="288" y="256" width="224" height="72" rx="6" fill="#ffffff" stroke="#dddddd" stroke-width="1"/>
+  <rect x="288" y="256" width="224" height="3" rx="1" fill="#555555"/>
+  <text x="400" y="282" text-anchor="middle" font-size="13" font-weight="700" fill="#111111">Authentication</text>
+  <text x="400" y="302" text-anchor="middle" font-size="10" fill="#888888" font-family="Arial, sans-serif">NUid session management</text>
+
+  <rect x="530" y="256" width="224" height="72" rx="6" fill="#ffffff" stroke="#dddddd" stroke-width="1"/>
+  <rect x="530" y="256" width="224" height="3" rx="1" fill="#555555"/>
+  <text x="642" y="282" text-anchor="middle" font-size="13" font-weight="700" fill="#111111">PostgreSQL DB</text>
+  <text x="642" y="302" text-anchor="middle" font-size="10" fill="#888888" font-family="Arial, sans-serif">Sessions, scores &amp; users</text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="400" y1="348" x2="400" y2="372" stroke="#CC0000" stroke-width="1.5"/>
+  <polygon points="394,368 400,380 406,368" fill="#CC0000"/>
+
+  <!-- ── TIER 3: AI Services ── -->
+  <rect x="30" y="382" width="740" height="120" rx="8" fill="#111111" stroke="#333333" stroke-width="1"/>
+  <rect x="30" y="382" width="4" height="120" rx="2" fill="#CC0000"/>
+  <text x="46" y="401" font-size="9" font-weight="700" fill="#CC0000" font-family="Arial, sans-serif" letter-spacing="2">AI SERVICES · ANTHROPIC + BROWSER APIS</text>
+
+  <rect x="46" y="410" width="224" height="72" rx="6" fill="#1e1e1e" stroke="#333333" stroke-width="1"/>
+  <rect x="46" y="410" width="224" height="3" rx="1" fill="#CC0000"/>
+  <text x="158" y="436" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Claude API</text>
+  <text x="158" y="456" text-anchor="middle" font-size="10" fill="#aaaaaa" font-family="Arial, sans-serif">6 AI reviewer panel</text>
+
+  <rect x="288" y="410" width="224" height="72" rx="6" fill="#1e1e1e" stroke="#333333" stroke-width="1"/>
+  <rect x="288" y="410" width="224" height="3" rx="1" fill="#CC0000"/>
+  <text x="400" y="436" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Claude Vision</text>
+  <text x="400" y="456" text-anchor="middle" font-size="10" fill="#aaaaaa" font-family="Arial, sans-serif">Body language analysis</text>
+
+  <rect x="530" y="410" width="224" height="72" rx="6" fill="#1e1e1e" stroke="#333333" stroke-width="1"/>
+  <rect x="530" y="410" width="224" height="3" rx="1" fill="#CC0000"/>
+  <text x="642" y="436" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">Web Speech API</text>
+  <text x="642" y="456" text-anchor="middle" font-size="10" fill="#aaaaaa" font-family="Arial, sans-serif">Live filler word detection</text>
+
+  <!-- Arrow 3→4 -->
+  <line x1="400" y1="502" x2="400" y2="526" stroke="#CC0000" stroke-width="1.5"/>
+  <polygon points="394,522 400,534 406,522" fill="#CC0000"/>
+
+  <!-- ── TIER 4: External ── -->
+  <rect x="30" y="536" width="740" height="82" rx="8" fill="#ffffff" stroke="#e0e0e0" stroke-width="1"/>
+  <rect x="30" y="536" width="4" height="82" rx="2" fill="#999999"/>
+  <text x="46" y="555" font-size="9" font-weight="700" fill="#999999" font-family="Arial, sans-serif" letter-spacing="2">EXTERNAL INTEGRATIONS</text>
+
+  <rect x="46" y="563" width="224" height="46" rx="6" fill="#f9f9f9" stroke="#e8e8e8" stroke-width="1"/>
+  <text x="158" y="581" text-anchor="middle" font-size="13" font-weight="700" fill="#111111">Google Meet API</text>
+  <text x="158" y="598" text-anchor="middle" font-size="10" fill="#888888" font-family="Arial, sans-serif">Peer volunteer sessions</text>
+
+  <rect x="288" y="563" width="224" height="46" rx="6" fill="#f9f9f9" stroke="#e8e8e8" stroke-width="1"/>
+  <text x="400" y="581" text-anchor="middle" font-size="13" font-weight="700" fill="#111111">Monaco IDE</text>
+  <text x="400" y="598" text-anchor="middle" font-size="10" fill="#888888" font-family="Arial, sans-serif">Embedded code editor</text>
+
+  <rect x="530" y="563" width="224" height="46" rx="6" fill="#f9f9f9" stroke="#e8e8e8" stroke-width="1"/>
+  <text x="642" y="581" text-anchor="middle" font-size="13" font-weight="700" fill="#111111">NUid SSO</text>
+  <text x="642" y="598" text-anchor="middle" font-size="10" fill="#888888" font-family="Arial, sans-serif">NU login provider</text>
+
+  <!-- Bottom red stripe + footer -->
+  <rect x="0" y="628" width="800" height="4" fill="#CC0000"/>
+  <text x="400" y="622" text-anchor="middle" font-size="9" fill="#aaaaaa" font-family="Arial, sans-serif">NUMockBuddy · Northeastern University · © 2026 · Built by NU Seattle Students · Emerald Forge Hackathon 2026</text>
+
+</svg>

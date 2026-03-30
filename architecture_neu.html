@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NUMockBuddy — Architecture</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      background: #f5f5f5;
+      color: #111111;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 16px 48px;
+    }
+
+    header {
+      width: 100%; max-width: 980px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 2px solid #CC0000;
+    }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-circle {
+      width: 46px; height: 46px;
+      background: #CC0000; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: Georgia, serif; font-weight: 700; font-size: 20px; color: #fff;
+    }
+    .logo-text h1 { font-family: Georgia, serif; font-size: 20px; font-weight: 700; color: #111; }
+    .logo-text p  { font-family: Arial, sans-serif; font-size: 10px; color: #999; margin-top: 3px; letter-spacing: 1.5px; text-transform: uppercase; }
+    .badge {
+      font-family: Arial, sans-serif; font-size: 10px; font-weight: 700;
+      background: #CC0000; color: #fff;
+      padding: 5px 14px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .diagram {
+      width: 100%; max-width: 980px;
+      background: #fff; border-radius: 12px;
+      border: 1px solid #e0e0e0;
+      overflow: hidden;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    }
+
+    .tier {
+      padding: 20px 24px 22px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .tier:last-child { border-bottom: none; }
+    .tier.dark { background: #111111; border-bottom-color: #222; }
+
+    .tier-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+    }
+    .tier-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .tier-label {
+      font-family: Arial, sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; color: #888;
+    }
+    .tier-label.red { color: #CC0000; }
+    .tier-line { flex: 1; height: 1px; background: #eee; }
+    .tier-line.dark { background: #333; }
+
+    .cards { display: grid; gap: 10px; }
+    .cols-5 { grid-template-columns: repeat(5, 1fr); }
+    .cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+    .card {
+      border-radius: 8px; padding: 14px 12px 12px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      text-align: center;
+      border: 1px solid transparent;
+      position: relative; overflow: hidden;
+    }
+    .card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: #CC0000; opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .card:hover { transform: translateY(-3px); }
+    .card:hover::before { opacity: 1; }
+    .card:active { transform: translateY(0); }
+
+    .card-icon  { font-size: 18px; margin-bottom: 7px; display: block; font-style: normal; }
+    .card-title { font-family: Georgia, serif; font-size: 13px; font-weight: 700; color: #111; margin-bottom: 4px; }
+    .card-sub   { font-family: Arial, sans-serif; font-size: 10px; color: #888; line-height: 1.5; }
+    .card-tag   {
+      display: inline-block; margin-top: 6px;
+      font-family: Arial, sans-serif; font-size: 9px; font-weight: 700;
+      background: #CC0000; color: #fff;
+      padding: 2px 7px; border-radius: 10px; letter-spacing: 0.5px;
+    }
+
+    /* tier themes */
+    .t-frontend .card { background: #fff5f5; border-color: #f5c6c6; }
+    .t-backend  .card { background: #fafafa; border-color: #e5e5e5; }
+
+    .t-ai .card {
+      background: #1e1e1e; border-color: #333;
+      box-shadow: none;
+    }
+    .t-ai .card-title { color: #fff; }
+    .t-ai .card-sub   { color: #aaa; }
+    .t-ai .card.highlight { border-color: #CC0000; }
+    .t-ai .card.highlight .card-tag { background: #CC0000; }
+    .t-ai .card:hover { box-shadow: 0 4px 14px rgba(204,0,0,0.25); }
+
+    .t-ext .card { background: #fff; border-color: #ebebeb; }
+
+    /* Arrow */
+    .arrow-row {
+      display: flex; justify-content: center; align-items: center;
+      padding: 4px 0;
+      background: #fafafa;
+      border-top: 1px solid #f0f0f0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .arrow-row.dark {
+      background: #0a0a0a;
+      border-color: #222;
+    }
+
+    /* Detail panel */
+    .detail-panel {
+      display: none; width: 100%; max-width: 980px;
+      margin-top: 16px;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #e0e0e0;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    }
+    .detail-panel.visible { display: block; }
+    .detail-inner { display: flex; }
+    .detail-stripe { width: 5px; background: #CC0000; flex-shrink: 0; }
+    .detail-content { padding: 20px 24px; flex: 1; }
+    .detail-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+    .detail-title { font-family: Georgia, serif; font-size: 16px; font-weight: 700; color: #CC0000; }
+    .detail-meta  { font-family: Arial, sans-serif; font-size: 11px; color: #CC0000; margin-bottom: 10px; font-weight: 600; }
+    .detail-body  { font-family: Arial, sans-serif; font-size: 13px; color: #444; line-height: 1.7; }
+    .detail-close { background: none; border: none; font-size: 18px; cursor: pointer; color: #ccc; padding: 0 0 0 12px; }
+    .detail-close:hover { color: #CC0000; }
+
+    footer {
+      margin-top: 28px;
+      font-family: Arial, sans-serif; font-size: 10px; color: #aaa;
+      text-align: center; letter-spacing: 0.5px;
+    }
+    footer a { color: #CC0000; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 760px) {
+      .cols-5 { grid-template-columns: repeat(2, 1fr); }
+      .cols-4 { grid-template-columns: repeat(2, 1fr); }
+      .cols-3 { grid-template-columns: repeat(1, 1fr); }
+      header  { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-circle">N</div>
+    <div class="logo-text">
+      <h1>NUMockBuddy</h1>
+      <p>System Architecture · Click any component</p>
+    </div>
+  </div>
+  <a class="badge" href="https://numockbuddy.netlify.app/" target="_blank">Live Demo ↗</a>
+</header>
+
+<div class="diagram">
+
+  <!-- Tier 1 Frontend -->
+  <div class="tier t-frontend">
+    <div class="tier-header">
+      <div class="tier-dot" style="background:#CC0000;"></div>
+      <div class="tier-label red">Frontend · Next.js 14 · TypeScript · Tailwind CSS</div>
+      <div class="tier-line"></div>
+    </div>
+    <div class="cards cols-5">
+      <div class="card" onclick="show('practice')">
+        <em class="card-icon">🎯</em>
+        <div class="card-title">Practice with AI</div>
+        <div class="card-sub">Interview flow</div>
+      </div>
+      <div class="card" onclick="show('resume')">
+        <em class="card-icon">📄</em>
+        <div class="card-title">Resume AI</div>
+        <div class="card-sub">ATS · JD · RAG chat</div>
+      </div>
+      <div class="card" onclick="show('volunteers')">
+        <em class="card-icon">🤝</em>
+        <div class="card-title">Volunteers</div>
+        <div class="card-sub">Book sessions</div>
+      </div>
+      <div class="card" onclick="show('dashboard')">
+        <em class="card-icon">📊</em>
+        <div class="card-title">Dashboard</div>
+        <div class="card-sub">Skill tracking</div>
+      </div>
+      <div class="card" onclick="show('support')">
+        <em class="card-icon">💬</em>
+        <div class="card-title">Help &amp; Support</div>
+        <div class="card-sub">Chat · a11y · FAQ</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-row">
+    <svg width="16" height="22" viewBox="0 0 16 22"><path d="M8 0v15M2 10l6 10 6-10" stroke="#CC0000" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+
+  <!-- Tier 2 Backend -->
+  <div class="tier t-backend">
+    <div class="tier-header">
+      <div class="tier-dot" style="background:#555;"></div>
+      <div class="tier-label">Backend · Next.js API Routes · PostgreSQL · bcryptjs + JWT</div>
+      <div class="tier-line"></div>
+    </div>
+    <div class="cards cols-3">
+      <div class="card" onclick="show('api')">
+        <em class="card-icon">⚙️</em>
+        <div class="card-title">Next.js API Routes</div>
+        <div class="card-sub">Serverless · same repo</div>
+      </div>
+      <div class="card" onclick="show('auth')">
+        <em class="card-icon">🔐</em>
+        <div class="card-title">Authentication</div>
+        <div class="card-sub">bcryptjs + custom JWT session</div>
+      </div>
+      <div class="card" onclick="show('db')">
+        <em class="card-icon">🗄️</em>
+        <div class="card-title">PostgreSQL DB</div>
+        <div class="card-sub">Sessions · scores · users</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-row">
+    <svg width="16" height="22" viewBox="0 0 16 22"><path d="M8 0v15M2 10l6 10 6-10" stroke="#CC0000" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+
+  <!-- Tier 3 AI -->
+  <div class="tier dark t-ai">
+    <div class="tier-header">
+      <div class="tier-dot" style="background:#CC0000;"></div>
+      <div class="tier-label red">AI &amp; ML · Claude · AssemblyAI · OpenAI Embeddings · LangChain</div>
+      <div class="tier-line dark"></div>
+    </div>
+    <div class="cards cols-4">
+      <div class="card highlight" onclick="show('claude')">
+        <em class="card-icon">🤖</em>
+        <div class="card-title">Claude API</div>
+        <div class="card-sub">6 parallel expert reviewers · resume analysis · career chat</div>
+        <span class="card-tag">claude-sonnet-4-20250514</span>
+      </div>
+      <div class="card" onclick="show('assemblyai')">
+        <em class="card-icon">🎙️</em>
+        <div class="card-title">AssemblyAI</div>
+        <div class="card-sub">Live speech transcription · real-time filler word detection</div>
+      </div>
+      <div class="card" onclick="show('vision')">
+        <em class="card-icon">👁️</em>
+        <div class="card-title">Claude Vision</div>
+        <div class="card-sub">Body language from camera snapshots · eye contact · confidence</div>
+      </div>
+      <div class="card" onclick="show('rag')">
+        <em class="card-icon">🧠</em>
+        <div class="card-title">RAG Pipeline</div>
+        <div class="card-sub">LangChain · ChromaDB · OpenAI text-embedding-3-small</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-row dark">
+    <svg width="16" height="22" viewBox="0 0 16 22"><path d="M8 0v15M2 10l6 10 6-10" stroke="#CC0000" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+
+  <!-- Tier 4 External -->
+  <div class="tier t-ext">
+    <div class="tier-header">
+      <div class="tier-dot" style="background:#999;"></div>
+      <div class="tier-label">External Integrations &amp; Deployment</div>
+      <div class="tier-line"></div>
+    </div>
+    <div class="cards cols-3">
+      <div class="card" onclick="show('meet')">
+        <em class="card-icon">📹</em>
+        <div class="card-title">Google Meet API</div>
+        <div class="card-sub">Auto invite to both requester and volunteer on booking</div>
+      </div>
+      <div class="card" onclick="show('monaco')">
+        <em class="card-icon">💻</em>
+        <div class="card-title">Monaco IDE</div>
+        <div class="card-sub">Embedded VS Code editor for coding questions</div>
+      </div>
+      <div class="card" onclick="show('netlify')">
+        <em class="card-icon">🚀</em>
+        <div class="card-title">Netlify</div>
+        <div class="card-sub">numockbuddy.netlify.app</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Detail Panel -->
+<div class="detail-panel" id="panel">
+  <div class="detail-inner">
+    <div class="detail-stripe"></div>
+    <div class="detail-content">
+      <div class="detail-top">
+        <div>
+          <div class="detail-title" id="p-title"></div>
+          <div class="detail-meta"  id="p-meta"></div>
+        </div>
+        <button class="detail-close" onclick="closePanel()">✕</button>
+      </div>
+      <div class="detail-body" id="p-body"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a href="https://numockbuddy.netlify.app/" target="_blank">NUMockBuddy</a> &nbsp;·&nbsp;
+  Northeastern University &nbsp;·&nbsp; © 2026 &nbsp;·&nbsp;
+  Built by NU Seattle Students &nbsp;·&nbsp;
+  <a href="https://github.com/Richa-04/NUMockBuddy" target="_blank">GitHub ↗</a>
+</footer>
+
+<script>
+const data = {
+  practice: {
+    title: "Practice with AI",
+    meta: "Frontend module · /practice",
+    body: "The core interview flow. Users pick job type (Internship/Co-op or Full-time), company (Google, Amazon, Meta, Microsoft, Apple, Fidelity, Salesforce, Adobe), role (SWE, DS, TPM, Audit), and interview format (Technical, Behavioral, System Design, HR). A lobby confirms camera setup before starting. During the interview, Monaco IDE opens for coding questions, AssemblyAI transcribes speech live to catch filler words, and Claude Vision analyzes expressions from periodic camera snapshots. After submission, 6 parallel Claude API calls (claude-sonnet-4-20250514) fire simultaneously — each acting as an independent expert reviewer scoring Communication, Technical Depth, Problem Solving, Behavioral Framing, Confidence, and Overall. Results include body language scores, speech analysis (filler word count + transcript), and a model answer for every question."
+  },
+  resume: {
+    title: "Resume AI",
+    meta: "Frontend module · /resume-ai · 3 API routes",
+    body: "Three separate modes each backed by a dedicated API route: (1) JD vs Resume — /api/resume-ai/analyze — upload resume and paste a job description, Claude returns keyword gap analysis, ATS match score, and AI-rewritten bullet points tailored to the role. (2) ATS Scanner — /api/resume-ai/ats — instant readability score, formatting check, keyword density analysis. (3) Career Assistant — /api/resume-ai/chat — a full RAG pipeline: LangChain orchestrates document chunking, OpenAI text-embedding-3-small embeds the content, MemoryVectorStore + ChromaDB store and retrieve context, and Claude generates responses for cover letters, outreach messages, LinkedIn summaries, and interview coaching. Supports attaching up to 3 files parsed via pdf-parse (PDF) and mammoth (DOCX)."
+  },
+  volunteers: {
+    title: "Peer Volunteer Network",
+    meta: "Frontend module · /volunteers",
+    body: "NU students who've completed co-ops sign up as volunteers with a 2-step form — profile info (name, program, company, role, skills, bio) and availability calendar (30-minute time slots). Other students browse volunteers filtered by company, role, or skill and request a session at an open slot. On confirmation, Google Meet API auto-generates a meeting link and sends calendar invites to both the requester and the volunteer. Skill areas include LeetCode, System Design, Behavioral, Dynamic Programming, SQL, Python, Amazon LP, and STAR Method."
+  },
+  dashboard: {
+    title: "Performance Dashboard",
+    meta: "Frontend module · /dashboard",
+    body: "Every completed session feeds into the dashboard. Tracks average score, communication, technical depth, problem solving, behavioral framing, confidence, and overall across all 6 expert dimensions over time using skill trend graphs. A daily question card is auto-seeded from the student's weakest skill area to ensure targeted practice. Full session history with question-by-question AI feedback is always accessible."
+  },
+  support: {
+    title: "Help & Support",
+    meta: "Frontend module · /help · /feedback",
+    body: "A full support layer: a searchable Help Center with 9 articles across Getting Started, Mock Interview Practice, Resume AI, Peer Mentors, and Account & Support. A NUMockBuddy Assistant chat widget is available on every page, powered by Claude API, for instant answers about interviews, resumes, and co-ops. A Feedback page captures Session Feedback, Platform Feedback, Peer Mentor Ratings, Bug Reports, and Feature Requests — all reviewed within 24 hours. An Accessibility Menu provides font size control, dyslexia font, dark/light/high contrast modes, letter spacing, line height, reading guide, stop animations, and big cursor."
+  },
+  api: {
+    title: "Next.js API Routes",
+    meta: "Backend · serverless · App Router",
+    body: "All server-side logic runs in Next.js 14 API routes (serverless functions, same repo as the frontend). Key routes include /api/practice/score (fires 6 parallel Claude calls), /api/resume-ai/analyze, /api/resume-ai/ats, /api/resume-ai/chat (RAG pipeline), and volunteer/session management routes. This architecture keeps API keys server-side and enables zero-config deployment on Netlify."
+  },
+  auth: {
+    title: "Authentication",
+    meta: "Backend · bcryptjs · custom JWT session",
+    body: "Custom authentication — users register and log in with their Northeastern email (@northeastern.edu). Passwords are hashed using bcryptjs. Sessions are managed with a custom JWT-style implementation rather than a third-party SSO provider. User profile includes NUid, name, program (MSCS, MSIS, etc.), and role."
+  },
+  db: {
+    title: "PostgreSQL Database",
+    meta: "Backend · PostgreSQL",
+    body: "PostgreSQL stores all persistent data: user profiles (email, NUid, hashed password, program), practice sessions (questions asked, user responses, scores per dimension per session), session history, volunteer profiles (skills, company experience, bio), availability slots, booked peer sessions, daily question assignments, and feedback submissions."
+  },
+  claude: {
+    title: "Claude API",
+    meta: "AI · Anthropic · claude-sonnet-4-20250514",
+    body: "The primary AI layer. Used in three ways: (1) Practice scoring — /api/practice/score fires 6 parallel claude-sonnet-4-20250514 calls, each acting as an independent expert reviewer for one dimension (Communication, Technical Depth, Problem Solving, Behavioral Framing, Confidence, Overall). Results return simultaneously as a panel verdict with scores, detailed feedback, and a model answer. (2) Resume analysis — /api/resume-ai/analyze and /api/resume-ai/ats use Claude to evaluate keyword coverage, ATS compatibility, and suggest rewrites. (3) Career Assistant — /api/resume-ai/chat uses Claude as the generation layer on top of the RAG pipeline, producing cover letters, outreach messages, LinkedIn summaries, and interview coaching."
+  },
+  assemblyai: {
+    title: "AssemblyAI",
+    meta: "AI · Speech-to-text · Filler word detection",
+    body: "AssemblyAI handles all speech processing during video mode interviews. It provides live speech-to-text transcription as the student answers, and simultaneously detects filler words (um, uh, like, you know, so, basically, literally) in real time. Post-session, the total filler word count and full transcript are shown in the Speech Analysis section of the results page, giving students immediate concrete feedback on verbal delivery."
+  },
+  vision: {
+    title: "Claude Vision",
+    meta: "AI · Anthropic · claude-sonnet-4-20250514",
+    body: "During video mode, the app takes periodic snapshots from the user's webcam. These frames are sent to Claude Vision (claude-sonnet-4-20250514) which analyzes body language and returns three scores: Eye Contact (is the user looking at the camera lens?), Confidence (hand position relative to face, posture signals), and Engagement (nodding, smiling, active presence). Each score is out of 10, and actionable tips are generated — e.g. 'Lower your hand from your face to project more confidence' or 'Smile slightly and nod occasionally to show active engagement'."
+  },
+  rag: {
+    title: "RAG Pipeline",
+    meta: "ML · LangChain · ChromaDB · OpenAI text-embedding-3-small",
+    body: "The Career Assistant (/api/resume-ai/chat) uses a full Retrieval-Augmented Generation pipeline. Uploaded files (PDF via pdf-parse, DOCX via mammoth) are parsed into text, chunked by LangChain, and embedded using OpenAI's text-embedding-3-small model. Embeddings are stored in MemoryVectorStore with ChromaDB as the vector database. On each chat message, relevant chunks are retrieved and injected as context into the Claude prompt, enabling the assistant to give advice grounded in the student's actual resume and documents rather than generic responses."
+  },
+  meet: {
+    title: "Google Meet API",
+    meta: "Integration · Google Meet",
+    body: "When a student books a peer volunteer session, the Google Meet API auto-generates a unique meeting link for the confirmed time slot. Calendar invites are automatically sent to both the requester and the volunteer — neither party needs to manually share a link. Screen sharing is available so volunteers can review code or resume together live during the session."
+  },
+  monaco: {
+    title: "Monaco IDE",
+    meta: "Integration · VS Code editor",
+    body: "The same code editor that powers VS Code is embedded directly in the interview interface. It opens automatically when the system detects a coding question. Supports syntax highlighting and auto-completion across multiple programming languages. This gives students a realistic coding environment that closely mirrors actual technical interview tools, instead of typing code into a plain textarea."
+  },
+  netlify: {
+    title: "Netlify",
+    meta: "Deployment · numockbuddy.netlify.app",
+    body: "NUMockBuddy is deployed on Netlify. The Next.js 14 App Router app runs as a serverless deployment — API routes become Netlify Functions automatically. Live at https://numockbuddy.netlify.app/"
+  }
+};
+
+function show(key) {
+  const d = data[key];
+  if (!d) return;
+  document.getElementById('p-title').textContent = d.title;
+  document.getElementById('p-meta').textContent  = d.meta;
+  document.getElementById('p-body').textContent  = d.body;
+  const p = document.getElementById('panel');
+  p.classList.add('visible');
+  setTimeout(() => p.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+}
+
+function closePanel() {
+  document.getElementById('panel').classList.remove('visible');
+}
+</script>
+</body>
+</html>
