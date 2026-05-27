@@ -27,6 +27,7 @@ interface ChatWidgetContextType {
 
 const ChatWidgetContext = createContext<ChatWidgetContextType | null>(null);
 
+//all status wholely managed in this context
 export function ChatWidgetProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"messages" | "articles">("messages");
@@ -36,6 +37,7 @@ export function ChatWidgetProvider({ children }: { children: React.ReactNode }) 
   const [sessionId, setSessionId] = useState<string | null>(null);
   const hasOpenedBefore = useRef(false);
 
+  //open chatting
   const openWidget = useCallback(() => {
     setIsOpen(true);
     setHasUnread(false);
@@ -60,7 +62,9 @@ export function ChatWidgetProvider({ children }: { children: React.ReactNode }) 
     setHasUnread(false);
   }, []);
 
+  //发消息的完整流程
   const sendMessage = useCallback(async (content: string) => {
+    //先把user message add in the list
     const userMsg: Message = {
       id: crypto.randomUUID(),
       role: "user",
@@ -71,7 +75,9 @@ export function ChatWidgetProvider({ children }: { children: React.ReactNode }) 
     setMessages((prev) => [...prev, userMsg]);
     setIsTyping(true);
 
+    //get backend api response
     try {
+      //get backend api
       const response = await fetch("/api/chat/widget", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -80,6 +86,7 @@ export function ChatWidgetProvider({ children }: { children: React.ReactNode }) 
             role: m.role,
             content: m.content,
           })),
+          //传入sessionid 让后端知道是同一个对话
           sessionId,
         }),
       });
@@ -115,7 +122,7 @@ export function ChatWidgetProvider({ children }: { children: React.ReactNode }) 
       setIsTyping(false);
     }
   }, [messages, sessionId, isOpen]);
-
+  //把所有状态和操作打包，传给所有的子组件
   return (
     <ChatWidgetContext.Provider
       value={{
@@ -139,8 +146,12 @@ export function ChatWidgetProvider({ children }: { children: React.ReactNode }) 
   );
 }
 
+//how sub content to use it
 export function useChatWidget() {
   const ctx = useContext(ChatWidgetContext);
   if (!ctx) throw new Error("useChatWidget must be used inside ChatWidgetProvider");
   return ctx;
 }
+
+//provide -》provide data like provide the box
+//usecontext -》get the data outside the subagent

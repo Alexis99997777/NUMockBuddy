@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
+//给typecript做类型检查 给自己和团队看的 作为文档的作用
 interface User {
   fullName: string
   nuid: string

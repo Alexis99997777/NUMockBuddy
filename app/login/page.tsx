@@ -23,21 +23,26 @@ export default function LoginPage() {
       setError('Please enter your password.')
       return
     }
-
+    //显示加载中 按钮转圈
     setLoading(true)
     try {
+      //发请求给后端的登陆接口
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       })
+
+      //把后端 返回的数据解析出来
       const data = await res.json()
+      //判断登陆成不成功
       if (!res.ok) {
         setError(data.error || 'Login failed. Please try again.')
       } else {
         window.location.href = '/'
       }
     } catch {
+      //网络断了服务器挂了 才走这里
       setError('Something went wrong. Please try again.')
     } finally {
       setLoading(false)

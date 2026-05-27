@@ -225,3 +225,18 @@ NUMockBuddy was built by **NU Seattle Students** at **Emerald Forge Hackathon 20
 ## License
 
 MIT © 2026 NUMockBuddy — Northeastern University
+
+
+## recommenaion system
+//content - based , rule - scoring 
+// score = 0.5 x 公司匹配 + 0.3 x 角色匹配 + 0.2 x 技能匹配
+
+// conttent-based embeding
+//把用户练过的内容 和 志愿者描述都转成向量，算语言匹配度
+
+
+//collaborative filtering
+
+need a lot of user infomation
+
+排序取前n名，再进行展示

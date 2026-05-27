@@ -1,12 +1,19 @@
+//数据库连接 datasource
+//generator prisma client代码生成的位置
+//所有数据模型model和枚举enum
+
+//代码生成的位置
 generator client {
   provider = "prisma-client"
   output   = "../app/generated/prisma"
 }
 
+//数据源配置
 datasource db {
   provider = "postgresql"
 }
 
+//model对应数据库里的一张表
 model ResumeScan {
   id            String   @id @default(cuid())
   userId        String

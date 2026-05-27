@@ -261,6 +261,7 @@ function InterviewLobbyContent() {
                 overflow: 'hidden',
               }}>
                 {/* Video element always in DOM so ref is available before camera starts */}
+                {/**camera standard write**/}
                 <video
                   ref={videoRef}
                   autoPlay

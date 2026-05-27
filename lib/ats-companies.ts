@@ -3,6 +3,8 @@ export type ATSInfo = {
   note: string;
 };
 
+//ts 工具类型 格式的映射
+
 export const ATS_MAP: Record<string, ATSInfo> = {
   "google": { ats: "Greenhouse", note: "Greenhouse parses multi-column layouts poorly — use single column." },
   "microsoft": { ats: "Workday", note: "Workday struggles with tables and text boxes — avoid them." },
@@ -46,7 +48,10 @@ export const ATS_MAP: Record<string, ATSInfo> = {
   "hubspot": { ats: "Greenhouse", note: "Greenhouse reads clean single-column PDFs reliably." },
 };
 
+//给一个公司名 返回信息
 export function lookupATS(companyName: string): ATSInfo | null {
+  //去给格式修改
   const key = companyName.toLowerCase().trim();
+  //去字典里查 如果没有 ？？ 就返回null
   return ATS_MAP[key] ?? null;
 }
